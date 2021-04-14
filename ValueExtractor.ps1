@@ -7,7 +7,7 @@ foreach ($PC in $PCS){
         $save = new-Object -TypeName PSObject -Property  @{
                 Count =$i
                 IP = $PC
-                Computer_name = $computer_name
+                Extracted_value = $extracted_value
                 }
 
         try{
@@ -16,18 +16,18 @@ foreach ($PC in $PCS){
             try{
 
                 $Registry = [Microsoft.Win32.RegistryKey]::OpenRemoteBaseKey('LocalMachine', $PC)
-                $RegistryKeyBnr = $Registry.OpenSubKey("SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName", $true)
-                $computer_name = $RegistryKeyBnr.GetValue('ComputerName')
+                $RegistryKey = $Registry.OpenSubKey("SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName", $true)
+                $extracted_value = $RegistryKey.GetValue('ComputerName')
                 $i += 1
 
-                Write-host $i $PC $computer_name
+                Write-host $i $PC $extracted_value
                 $save | Export-Csv $path -Append
 
                 }
 
             catch{
 
-                  $computer_name = 'Error'
+                  $extracted_value = 'Error'
                   $i += 1
                   write-host $i $PC
                   $save | Export-Csv $path -Append
@@ -36,7 +36,7 @@ foreach ($PC in $PCS){
 
             }
 
-            else{$computer_name = 'Offline'
+            else{$extracted_value = 'Offline'
             $i += 1
             write-host $i $PC ' Offline'
             $save | Export-Csv $path -Append
@@ -47,7 +47,7 @@ foreach ($PC in $PCS){
         catch{
 
             write-host $i $PC 'Error'
-            $computer_name = 'Error'
+            $extracted_value = 'Error'
             $i += 1
             $save | Export-Csv $path -Append
             
