@@ -1,4 +1,4 @@
-$PCS = get-content -path C:\Users\s5136c\Desktop\file_with_list_of_computers.txt
+$PCS = get-content -path C:\Users\User\Desktop\file_with_list_of_computers.txt #Path for computer list
 $path = "C:\Users\s5136c\Desktop\Exporeted_list.csv"
 $i = 1
 
